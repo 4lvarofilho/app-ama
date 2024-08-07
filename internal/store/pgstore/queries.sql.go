@@ -166,7 +166,7 @@ func (q *Queries) ReactToMessage(ctx context.Context, id uuid.UUID) (int64, erro
 	return reaction_count, err
 }
 
-const removeReactionToMessage = `-- name: RemoveReactionToMessage :one
+const removeReactionFromMessage = `-- name: RemoveReactionFromMessage :one
 UPDATE messages
 SET
   reaction_count = reaction_count - 1
@@ -175,8 +175,8 @@ WHERE
 RETURNING reaction_count
 `
 
-func (q *Queries) RemoveReactionToMessage(ctx context.Context, id uuid.UUID) (int64, error) {
-	row := q.db.QueryRow(ctx, removeReactionToMessage, id)
+func (q *Queries) RemoveReactionFromMessage(ctx context.Context, id uuid.UUID) (int64, error) {
+	row := q.db.QueryRow(ctx, removeReactionFromMessage, id)
 	var reaction_count int64
 	err := row.Scan(&reaction_count)
 	return reaction_count, err
